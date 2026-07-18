@@ -7,7 +7,7 @@
 // ============================================================
 const CONFIG = {
   // Purani line: API_BASE: '/api',
-  API_BASE: 'http://127.0.0.1:8000/api', // <--- Bas yeh local address lagao
+  API_BASE: 'https://ragpdfchatbot61.vercel.app/', // <--- Bas yeh local address lagao
   MAX_FILE_SIZE: 50 * 1024 * 1024, // 20MB
   ALLOWED_TYPES: ['application/pdf'],
   PARTICLE_COUNT: 25,
@@ -153,7 +153,7 @@ async function processFile(file) {
   }
   // Validate file size
   if (file.size > CONFIG.MAX_FILE_SIZE) {
-    showToast('File size exceeds 20MB limit.', 'error');
+    showToast('File size exceeds 50MB limit.', 'error');
     return;
   }
   // Show progress
