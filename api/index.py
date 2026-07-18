@@ -113,7 +113,7 @@ async def chat(
         llm = ChatGroq(
             model = "llama-3.3-70b-versatile",
             api_key=groq_api_key,
-            temperature=0.0,
+            temperature=0.2,
             max_tokens=1024,
         )
         messages = [
