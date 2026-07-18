@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="IntellectRAG Engine — AI-Powered Document Intelligence Platform with RAG pipeline, powered by Groq and LangChain." />
+  <meta name="theme-color" content="#060b18" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>IntellectRAG Engine — AI Document Intelligence</title>
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background decorations -->
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+  <div class="grid-overlay"></div>
+  <div id="particles"></div>
+  <!-- App Shell -->
+  <div id="app">
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+      <!-- Hamburger Menu (Mobile) -->
+      <button class="header__menu-btn" id="menu-btn" aria-label="Toggle sidebar menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <!-- Brand -->
+      <div class="header__brand">
+        <div class="header__logo">IR</div>
+        <div>
+          <div class="header__title">IntellectRAG</div>
+          <div class="header__subtitle">AI Document Intelligence Engine</div>
+        </div>
+      </div>
+      <!-- Status -->
+      <div class="header__status">
+        <div class="status-badge" id="status-badge">
+          <span class="status-dot status-dot--inactive" id="status-dot"></span>
+          <span id="status-text">Connecting...</span>
+        </div>
+      </div>
+    </header>
+    <!-- ===== MAIN LAYOUT ===== -->
+    <main class="main">
+      <!-- Sidebar Overlay (Mobile) -->
+      <div class="sidebar-overlay" id="sidebar-overlay"></div>
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="sidebar" id="sidebar">
+        <!-- Upload Section -->
+        <div class="sidebar__section">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Document Upload
+          </div>
+          <!-- Upload Zone (3D Card) -->
+          <div class="upload-zone">
+            <div class="upload-card" id="upload-card">
+              <div class="upload-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="12" y1="18" x2="12" y2="12"/>
+                  <line x1="9" y1="15" x2="12" y2="12"/>
+                  <line x1="15" y1="15" x2="12" y2="12"/>
+                </svg>
+              </div>
+              <div class="upload-title">Drop PDF here</div>
+              <div class="upload-desc">or click to browse · Max 50MB</div>
+            </div>
+            <input type="file" class="upload-input" id="upload-input" accept=".pdf" />
+            <!-- Upload Progress -->
+            <div class="upload-progress" id="upload-progress">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+              </div>
+              <div class="progress-text" id="progress-text">Uploading...</div>
+            </div>
+          </div>
+        </div>
+        <!-- Documents List Section -->
+        <div class="sidebar__section">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            Documents
+          </div>
+          <ul class="file-list" id="file-list"></ul>
+          <!-- Empty State -->
+          <div class="empty-state" id="file-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+              <polyline points="13 2 13 9 20 9"/>
+            </svg>
+            <span>No documents uploaded yet</span>
+          </div>
+        </div>
+        <!-- Parameters Section -->
+        <div class="sidebar__section">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Model Parameters
+          </div>
+          <!-- Model Select -->
+          <div class="param-group">
+            <label class="param-label" for="model-select">Inference Model</label>
+            <select class="param-select" id="model-select">
+              <option value="llama-3.1-70b-versatile" selected>Llama 3.1 70B Versatile</option>
+              <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+              <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+              <option value="gemma2-9b-it">Gemma 2 9B IT</option>
+            </select>
+          </div>
+          <!-- Temperature Slider -->
+          <div class="param-group">
+            <label class="param-label">
+              Temperature
+              <span class="param-value" id="temp-value">0.3</span>
+            </label>
+            <input type="range" class="param-slider" id="temp-slider" min="0" max="1" step="0.1" value="0.3" />
+          </div>
+          <!-- Max Tokens -->
+          <div class="param-group">
+            <label class="param-label">
+              Max Tokens
+              <span class="param-value">1024</span>
+            </label>
+            <input type="range" class="param-slider" min="128" max="4096" step="128" value="1024" disabled />
+          </div>
+          <!-- Retrieval Strategy -->
+          <div class="param-group">
+            <label class="param-label" for="retrieval-select">Retrieval Strategy</label>
+            <select class="param-select" id="retrieval-select">
+              <option value="semantic" selected>Semantic Search</option>
+              <option value="keyword">Keyword Match</option>
+              <option value="hybrid">Hybrid (Semantic + Keyword)</option>
+            </select>
+          </div>
+        </div>
+      </aside>
+      <!-- ===== CHAT AREA ===== -->
+      <section class="chat" id="chat">
+        <!-- Messages Container -->
+        <div class="chat__messages" id="chat-messages">
+          <!-- Welcome Screen -->
+          <div class="chat__welcome" id="chat-welcome">
+            <div class="welcome-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a7 7 0 0 1 7 7c0 3-1.5 5.5-4 7v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2c-2.5-1.5-4-4-4-7a7 7 0 0 1 7-7z"/>
+                <line x1="10" y1="22" x2="14" y2="22"/>
+                <line x1="9" y1="14" x2="9.01" y2="14"/>
+                <line x1="15" y1="14" x2="15.01" y2="14"/>
+              </svg>
+            </div>
+            <h1 class="welcome-title">IntellectRAG Engine</h1>
+            <p class="welcome-subtitle">
+              Upload your documents and ask intelligent questions. Powered by advanced RAG pipeline
+              with Groq's blazing-fast inference and in-memory vector search.
+            </p>
+            <!-- Feature Cards -->
+            <div class="feature-grid">
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                </div>
+                <div class="feature-card__title">Lightning Fast</div>
+                <div class="feature-card__desc">Sub-second inference via Groq Cloud</div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                </div>
+                <div class="feature-card__title">Smart Search</div>
+                <div class="feature-card__desc">Semantic vector retrieval engine</div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <div class="feature-card__title">Secure</div>
+                <div class="feature-card__desc">In-memory ephemeral processing</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Chat Input Area -->
+        <div class="chat__input-area">
+          <div class="chat__input-wrapper" id="chat-input-wrapper">
+            <textarea
+              class="chat__input"
+              id="chat-input"
+              placeholder="Ask anything about your documents..."
+              rows="1"
+              aria-label="Chat message input"
+            ></textarea>
+            <button class="chat__send-btn" id="send-btn" aria-label="Send message">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+          <div class="chat__input-hint">
+            Press <kbd style="background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;">Enter</kbd> to send · <kbd style="background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;">Shift + Enter</kbd> for new line
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toast-container"></div>
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
