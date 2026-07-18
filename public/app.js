@@ -7,8 +7,8 @@
 // ============================================================
 const CONFIG = {
   // Purani line: API_BASE: '/api',
-  API_BASE: 'https://ragpdfchatbot61.vercel.app/', // <--- Bas yeh local address lagao
-  MAX_FILE_SIZE: 50 * 1024 * 1024, // 20MB
+  API_BASE: '/api', // <--- Bas yeh local address lagao
+  MAX_FILE_SIZE: 50 * 1024 * 1024, // 50MB
   ALLOWED_TYPES: ['application/pdf'],
   PARTICLE_COUNT: 25,
   TOAST_DURATION: 4000,
