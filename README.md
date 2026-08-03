@@ -50,7 +50,7 @@ IntellectRAG/
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/YOUR_USERNAME/IntellectRAG.git](https://github.com/YOUR_USERNAME/IntellectRAG.git)
+git clone [https://github.com/mhassan619/IntellectRAG.git](https://github.com/mhassan619/IntellectRAG.git)
 cd IntellectRAG
 
 ```
